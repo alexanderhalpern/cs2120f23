@@ -233,7 +233,7 @@ example, *double 4* should reduce to *8*.
 -/
 
 def double : Nat → Nat
-| _ => _
+| n => 2 * n
 
 #eval apply2_nat double 4     -- expect 16 (2 * (2 * 4))
 #eval apply2_nat double 10    -- expect 40 (2 * (2 * 10))
@@ -249,6 +249,11 @@ few inputs, including 5. Give your answer here:
 
 #A. define the *square* function here:
 -/
+def square : Nat → Nat
+| n => Nat.pow n 2
+
+#eval square 32
+
 
 -- here:
 
@@ -284,9 +289,9 @@ complete its definition here.
 -- here, fill in the missing expression
 
 def exclaim : String → String 
-| s => _    -- with s bound to first argument value
+| s => s ++ "!"    -- with s bound to first argument value
 
-#check (exclaim "Hello")
+#check exclaim "Hello"
 #eval exclaim "Hello"
 #eval exclaim (exclaim "Hello")
 
