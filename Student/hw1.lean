@@ -54,7 +54,7 @@ the String.length function?
 
 Answer here:
 -/
-String → Nat
+#check "String".length -- type (String → Nat) or (a✝ : String) : Nat
 /-!
 ## 2: Define a Boolean operation
 The *implies* function from Boolean algebra takes 
