@@ -54,7 +54,7 @@ the String.length function?
 
 Answer here:
 -/
-#check "String".length -- type (String → Nat) or (a✝ : String) : Nat
+String → Nat -- #check String.length
 /-!
 ## 2: Define a Boolean operation
 The *implies* function from Boolean algebra takes 
@@ -76,10 +76,9 @@ def imp : Bool → Bool → Bool
 | true, true => true
 | false, true => true
 | false, false => true
-
 -- or
-def imp' : Bool → Bool → Bool
-| a, b => !(a & !b)
+-- def imp : Bool → Bool → Bool
+-- | a, b => !(a & !b)
 
 /-!
 ## Problem 3: Prove correctness by exhaustive testing
@@ -141,7 +140,7 @@ argument, and finally *s*.
 
 -- Here's an implementation of isEven 
 def isEven : Nat → Bool
-| n => if (n%2 = 0) then true else false
+| n => if (n % 2 = 0) then true else false
 
 #check (isEven)           -- Nat → Bool
 #eval isEven 2            -- expect true
@@ -230,6 +229,6 @@ def square : Nat → Nat
 
 -- Write your tests here; include expected results
 
--- the order matters here
+-- the order matters here and swapping the order of the double and square function parameters alters the result
 #eval glue_funs double square 5  -- expected to be 50
 #eval glue_funs square double 5  -- expected to be 100
