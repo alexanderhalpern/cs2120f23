@@ -73,6 +73,9 @@ def id_poly : (α : Type) → α → α
 
 /-
 The key idea in play here is that we bind a name, 
+/-
+String.length (sorryAx String true) : Nat
+-/
 α, to the value of the (first) type parameter, and,
 having done that, we then express the rest of the 
 function type in terms of α. In more detail, here
@@ -348,6 +351,8 @@ following test cases should work.
 
 -- Now you can and should write the code here:
 
+def apply2' : {α : Type} → (α → α) → α → α  
+| _, f, a => f (f a)
 
 -- same tests again
 #eval apply2' Nat.succ 0   -- expect 2
