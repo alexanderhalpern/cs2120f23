@@ -32,7 +32,7 @@ a result.
 def funkom {α β γ : Type} : (β → γ) → (α → β) → (α → γ)
 | g, f => (fun a => g (f a))
 
-#check funkom
+#check (@funkom)
 
 /-! 
 ## Problem #2
@@ -61,6 +61,7 @@ def op_left {α β : Type}: (α × β) → α
 | (a, _) => a 
 
 #eval op_left (4, 5)
+#check op_left
 
 /-! 
 ## Problem #4
@@ -74,6 +75,7 @@ def op_right {α β : Type}: α × β → β
 | (_, b) => b 
 
 #eval op_right (4, 5)
+#check op_right
 
 
 
@@ -125,7 +127,6 @@ open day
 inductive kind : Type
 | work 
 | play
-
 open kind
 
 def day2kind: day → kind
@@ -137,7 +138,7 @@ def day2kind: day → kind
 | friday => work
 | saturday => play
 
-#reduce day2kind sunday
+#reduce day2kind saturday --play
 
 inductive reward : Type
 | money
@@ -169,17 +170,26 @@ Consider the outputs of the following #check commands.
 #check Nat × (Nat × Nat)
 #check (Nat × Nat) × Nat
 
+#check Nat → Nat → Nat
+#check Nat → (Nat → Nat)
+#check (Nat → Nat) → Nat
+
 /-!
 Is × left associative or right associative? Briefly explain
 how you reached your answer.
 
 Answer here: 
-× is left associative because adding parenthesis around the last two elements
-of the type did not change the data type itself. This is to similar to 
-the → operator which is right associative and adding parenthesis to the 
+Based on these #check commands, × is right associative because adding 
+parenthesis around the last two elements of the type did not change the 
+data type itself. This indicates that the last two elements 
+were going to be evaluated first, without the need for parenthesis, so 
+× must be right associative. This is to similar to  the → operator which 
+is right associative and adding parenthesis to the 
 last two elements in a type declaration will not alter the type itself.
-When parenthesis were added on the leftmost elements, however, the type
-changed to something different, indicating that the × operator 
+I included #check statements for → operator above to show that the outputs 
+for × and → are similar. In both the case of × and →, when parenthesis 
+were added on the leftmost elements the type changed from the standard 
+statement without parenthesis, once again indicating that the × operator 
 must be right associative.
 
 ### B.
@@ -199,6 +209,7 @@ an argument and that returns, respectively, its first,
 second, or third elements.
 -/
 
+-- Here:
 def first: (α × β × γ) → α 
 | (a, _, _) => a
 
@@ -208,13 +219,6 @@ def second: (α × β × γ) → β
 def third: (α × β × γ) → γ 
 | (_, _, c) => c
 
-def test := triple "str1" 1 true
-
-#reduce first test
-#reduce second test
-#reduce third test
-
--- Here:
 
 /-!
 ### D.
@@ -223,6 +227,11 @@ you apply each of these "elimination" functions to a
 triple (that you can make up) it returns the correct
 element of that triple.  
 -/
+def my_triple := triple "str1" 1 true
+
+#eval first my_triple
+#eval second my_triple
+#eval third my_triple
 
 -- Here:
 
@@ -232,7 +241,7 @@ Use #check to check the type of a term. that you make
 up, of type (Nat × String) × Bool. The challenge here
 is to write a term of that type. 
 -/
-
+#check ((5, "Hello "), false)
 
 
 
