@@ -49,6 +49,9 @@ value of type α × β value and that returns a value
 of type β × α. Call your function prod_comm.
 -/
 
+-- Yes. Having Bread and Cheese is equivalent to having Cheese and Bread, and 
+-- you can always construct a type β × α if given α × β
+
 def prod_comm { α β : Type } : α × β → β × α
 | (a, b) => (b, a)
 
@@ -60,11 +63,10 @@ that order), then if you have any term of type
 of type *α × β*? Prove it by defining a function 
 of the appropriate type. Call it prod_com_reverse.
 -/
-
+-- Yes. You can always construct a type α × β if given β × α
 -- Here:
 def prod_com_reverse { α β : Type } :  β × α → α × β
 | (b, a) => (a, b)
-
 
 /-! 
 ## #3: Associativity of Prod
@@ -87,6 +89,8 @@ before the colon in our skeleton definition so that
 you don't have to match on them. Hint: You can use 
 ordered pair notation to match the input value.
 -/
+-- Yes, if you're given an arbitrary value of type α × (β × γ) then you can
+-- always produce a value of type  (α × β) × γ? 
 
 -- Here 
 def prod_assoc { α β γ : Type} :  α × (β × γ) → (α × β) × γ
@@ -97,11 +101,10 @@ Prove that the conversion works in the reverse direction
 as well, from *(α × β) × γ* to *α × (β × γ)* by defining
 a function, *prod_assoc_reverse* accordingly.
 -/
-
 -- Here:
 def prod_assoc_reverse { α β γ : Type} :  (α × β) × γ → α × (β × γ)
 | ((a, b), c) => (a, (b, c))
-#check prod_assoc_reverse
+-- #check prod_assoc_reverse
 /-!
 ## #4. Is Sum Commutative?
 
@@ -132,6 +135,9 @@ is really just notational shorthand for this kind
 of definition.
 -/
 
+-- Sums are commutative. Yes, if you have either a value of type α or a value of
+-- type β, then you do have either a value of type β or a value of type α
+
 def sum_comm { α β : Type} : α ⊕ β → β ⊕ α :=
 fun s => 
   match s with
@@ -139,12 +145,13 @@ fun s =>
   | (Sum.inr b) => Sum.inl b
 def test_Nat_Bool : Sum Nat Bool := Sum.inl 1
 #check sum_comm test_Nat_Bool
+
 /-!
 Can you always convert a term of type *β ⊕ α* into 
 one of type *α ⊕ β*? Prove it by writing a function 
 that does it. Call is sum_comm_reverse.
 -/
-
+-- Yes, you can
 -- Here:
 def sum_comm_reverse { α β : Type} : β ⊕ α → α ⊕ β :=
 fun s => 
@@ -178,7 +185,7 @@ which starts with a Sum.inr. You will need to use
 "nested" expressions involving Sum.inl and Sum.inr
 in both matching and to define return result values. 
 -/
-
+-- Yes, Sum types are associative.
 def sum_assoc { α β γ : Type} : α ⊕ (β ⊕ γ) → (α ⊕ β) ⊕ γ
 | (Sum.inl a) => (Sum.inl (Sum.inl a))
 | (Sum.inr (Sum.inl b)) => (Sum.inl (Sum.inr b))
@@ -191,7 +198,7 @@ with a function that takes a term of the second sum type
 (in the preceding example) as an argument and that returns
 a value of the first sum type as a result.
 -/
-
+-- Yes, it does work in reverse
 -- Here:
 def sum_assoc_reverse { α β γ : Type} : (α ⊕ β) ⊕ γ → α ⊕ (β ⊕ γ)
 | (Sum.inl (Sum.inl a)) => (Sum.inl a)
@@ -226,7 +233,7 @@ cheese or jam? Prove it with a function, that converts
 any value of type *(α × β) ⊕ (α × γ)* into one of type 
 *α × (β ⊕ γ)*.
 -/
-
+-- Yes, it works in reverse
 -- Here:
  def prod_dist_sum_reverse {α β γ : Type} : (α × β) ⊕ (α × γ) → α × (β ⊕ γ)
  | Sum.inl (a, b) => (a, Sum.inl b)
@@ -262,9 +269,9 @@ Now rewrite your function using the type names,
 *wet*. Call it *sum_elim*. 
 -/
 -- Here:
-def sum_elim (α γ β : Type): (Sum α γ) → (α → β) → (γ → β) → β
-| (Sum.inl a), r2w, _ => r2w a
-| (Sum.inr b), _, s2w => s2w b
+def sum_elim (α β γ : Type) : (Sum α β) → (α → γ) → (β → γ) → γ
+| (Sum.inl a), α2γ, _ => α2γ a  
+| (Sum.inr b), _, β2γ => β2γ b 
 /-!
 You should now better understand how to program 
 with arbitrary values of arbitrary sum types. To do 

@@ -151,7 +151,7 @@ def play : Object → Object → Result
 | rock, scissors => wins
 | rock, paper => loses
 | rock, rock => ties
-
+#check (@Object.scissors)
 #reduce play scissors rock
 
 -- eval vs reduce?
@@ -194,7 +194,12 @@ Here's a definition that will work for us.
 
 inductive Box (α : Type) : Type
 | put (a : α) --implicitely pulling type (α : Type) from type Box
-
+inductive Box' {α : Type} : Type
+| put' (a : α) --implicitely pulling type (α : Type) from type Box
+open Box'
+#check put' 5
+#check (@Box.put)
+-- #check (@Box'.put)
 /-!
 Let's explain it.
 - *inductive* is a keyword as explained above
