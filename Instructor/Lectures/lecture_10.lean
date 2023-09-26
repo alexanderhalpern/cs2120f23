@@ -42,6 +42,7 @@ def d0 := solid
 def d1 := shell d0
 def d2 := shell d1
 def d3 := shell d2
+#reduce d3
 
 /-!
 We could have written these definitions out showing

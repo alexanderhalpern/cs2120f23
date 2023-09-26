@@ -212,7 +212,7 @@ def elim_sum2 :
   String
 | (Sum.inl n), n2s, _ => n2s n
 | (Sum.inr b), _, b2s => b2s b
-
+def tester : Sum Nat Bool := Sum.inl 1
 /-!
 Let's analyze that. It takes arguments as expected,
 including Nat-to-String and Bool-to-String conversion

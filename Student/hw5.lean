@@ -66,7 +66,9 @@ in each place where a type like *α → Empty appears
 in this homework, replace it with *no α*. Use the
 right local names in each instance, of course. 
 -/
-def no (α : Type) := α → Empty
+inductive Foo : Type
+def f2e (f : Foo) : Empty := nomatch f
+def no (α : Type) := α → Empty 
 
 /-!
 We've now replaced each α → Empty with no α. We
@@ -76,8 +78,8 @@ doing so makes the logical meaning clearer.
 def not_either_not_both { jam cheese } :
   ((no jam) ⊕ (no cheese)) → 
   (no (jam × cheese)) 
-| Sum.inl nojam => (fun _ => _)
-| Sum.inr _ => _
+| (Sum.inl nojam) => fun (jc : jam × cheese ) => nojam (jc.1)
+| (Sum.inr nocheese) => fun (jc : jam × cheese ) => nocheese (jc.2)
 
 /-!
 ### #2: Not One or Not the Other Implies Not Both
@@ -90,9 +92,10 @@ names, *jam* and *cheese*.
 {α β : Type} → (α → Empty ⊕ β → Empty) → (α × β → Empty).
 -/
 
-def demorgan1  {α β : Type} : ((α → Empty) ⊕ (β → Empty)) → (α × β → Empty)  
-| (Sum.inl noa) => _
-| (Sum.inr nob) => _
+def demorgan1 {α β : Type} : ((α → Empty) ⊕ (β → Empty)) → (α × β → Empty)  
+| (Sum.inl no_a) => fun (ab : α × β) => no_a (ab.1)
+| (Sum.inr no_b) => fun (ab : α × β) => no_b (ab.2)
+
 
 /-!
 ### #3: Not Either Implies Not One And Not The Other
@@ -106,7 +109,10 @@ given *any* types, α and β,
 -/
 
 def demorgan2 {α β : Type} : (α ⊕ β → Empty) → ((α → Empty) × (β → Empty))
-| noaorb => _
+| noaorb => (
+  fun (a) => noaorb (Sum.inl a),
+  fun (b) => noaorb (Sum.inr b)
+)
 
 
 /-!
@@ -119,7 +125,11 @@ Hint: You might want to use an explicit match expression
 in writing your solution.
 -/
 def demorgan3 {α β : Type} : ((α → Empty) × (β → Empty)) → ((α ⊕ β) → Empty)  
-| _ => _
+| (afun, bfun) => 
+    fun empty : (α ⊕ β) => 
+      match empty with 
+      | Sum.inl a => afun a 
+      | Sum.inr b => bfun b
 
 /-!
 ## PART 2
@@ -148,7 +158,9 @@ matching.
 -/
 
 -- Here
-
+def pred: (Nat → Nat)
+| 0 => 0
+| (Nat.succ n') => n'
 
 
 -- Test cases
@@ -163,10 +175,15 @@ any natural number argument, *n*, and that returns a doll
 n shells deep. The verify using #reduce that (mk_doll 3)
 returns the same doll as *d3*. 
 -/
+inductive Doll : Type
+| solid
+| shell (d : Doll)
+open Doll
 
 -- Answer here
-
-
+def mk_doll : (Nat → Doll)
+| 0 => solid
+| (Nat.succ n') => shell (mk_doll n')
 
 -- test cases
 #check mk_doll 3
@@ -185,7 +202,7 @@ def nat_eq : Nat → Nat → Bool
 | 0, 0 => true
 | 0, n' + 1 => false
 | n' + 1, 0 => false
-| (n' + 1), (m' + 1) => _
+| (n' + 1), (m' + 1) => nat_eq n' m'
 
 -- a few tests
 #eval nat_eq 0 0
@@ -207,9 +224,20 @@ second, and false otherwise. Hint: what are the relevant
 cases? Match to destructure them then return the right
 result *in each case*.
 -/
+def nat_le : Nat → Nat → Bool
+| 0, 0 => true
+| 0, n' + 1 => true
+| n' + 1, 0 => false
+| (n' + 1), (m' + 1) => nat_eq n' m'
 
--- Here
-
+-- a few tests
+#eval nat_le 0 0
+#eval nat_le 0 1
+#eval nat_le 1 0
+#eval nat_le 1 1
+#eval nat_le 2 0
+#eval nat_le 2 1
+#eval nat_le 2 2
 /-!
 ###  #5. Nat Number Addition 
 
@@ -219,7 +247,7 @@ a natural number addition function.
 
 def add : Nat → Nat → Nat
 | m, 0 => m
-| m, (Nat.succ n') => _   -- hint: recursion
+| m, (Nat.succ n') => add (Nat.succ m) n'   -- hint: recursion
 
 
 -- Some test cases
@@ -238,13 +266,21 @@ Complete this function definition to implement
 a natural number multiplication function. You
 can't use Lean's Nat multiplication function.
 Your implementation should use productively
-the add function you just definied. Wite a few
+the add function you just definied. Write a few
 test cases to show that it appears to be working. 
  -/
 
 def mul : Nat → Nat → Nat
 | m, 0 => 0
-| m, (Nat.succ n') => add (_) (_)
+| m, (Nat.succ n') => add (m) (mul m n')
+
+-- Some test cases
+#reduce mul 0 0   -- expect 0
+#reduce mul 5 0   -- expect 0
+#reduce mul 1 5   -- expect 5
+#reduce mul 5 4   -- expect 20
+#reduce mul 4 5   -- expect 20
+#reduce mul 5 5   -- expect 25
 
 /-!
 ### Sum Binary Nat Function Over Range 0 to n 
@@ -262,6 +298,14 @@ to and including n.
 -/
 
 def sum_f : (Nat → Nat) → Nat → Nat 
-| f, 0 => _
-| f, n' + 1 => _
+| f, 0 => f 0
+| f, n' + 1 => add (f (n' + 1)) (sum_f f n')
 
+def square (n: Nat) : Nat := n * n 
+
+#reduce sum_f square 0 -- 0
+#reduce sum_f square 1 -- 1
+#reduce sum_f square 2 -- 5
+#reduce sum_f square 3 -- 14
+#reduce sum_f square 4 -- 30
+#reduce sum_f square 5 -- 55

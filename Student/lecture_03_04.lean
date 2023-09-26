@@ -69,7 +69,11 @@ call it *α : Type.* Here's the code we want.
 -/
 
 def id_poly : (α : Type) → α → α 
-| α, v => v
+| _, v => v
+
+def id_poly2 (α : Type) : α → α 
+| v => v
+#check (id_poly Nat)
 
 /-
 The key idea in play here is that we bind a name, 
@@ -210,7 +214,10 @@ of applying f twice to a: namely *f (f a)*.
 -- This apply2 version is specialized for Natty values                         f         a
 def apply2_nat : (Nat → Nat) → Nat → Nat
 | f, a => f (f a)
+def apply2 {α : Type}: (α → α) → α → α
+| f, a => f (f a)
 
+#check Type
 /-!
 Let's apply this function to some arguments to see 
 what we get. First we need some specific function,

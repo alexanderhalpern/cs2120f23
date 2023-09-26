@@ -99,7 +99,7 @@ we just saw, String → String → String, is exactly the same as
 this type! 
 -/
 #check String → (String → String)
-
+#check not
 /-!
 In general, a function that either returns a function as a
 result or that takes a function as an argument is called a

@@ -49,6 +49,14 @@ def square (n : Nat) := n ^ 2
 def exclaim (s : String) := s ++ "!"
 def is_even (n : Nat) := n % 2 == 0
 
+def double' (n : Nat) : Nat := 2 * n 
+def apply2' {α : Type} (f : α → α ) (x : α) : α := f (f x)
+def fund: Nat → Nat → Nat | x, y => x * y
+
+#eval apply2' double 2
+
+#eval (String.append "4" ∘ String.append "6") "45"
+
 /-!
 Now consider a simple application of apply2. 
 Before reading any further, be sure that you
@@ -181,6 +189,10 @@ def compose' {α β γ : Type} :
   (α → γ) 
 | g, f, a => g (f a)
 
+#check compose' 
+#check glue_funs
+#eval compose' double String.length "d"
+
 
 /-! 
 Self-test: Using *compose'*, define a function,
@@ -213,8 +225,10 @@ def compose {α β γ : Type} :
   (β → γ) → 
   (α → β) → 
   (α → γ)       
-| g, f => (fun a => g (f a)) 
+| g, f => (λ a=> g (f (a)))
 
+#check compose
+#eval (fun {α : Type} (x : α → α ) (y : α) => x y) double 5
 -- NOTE COMPARE THIS WITH THE SOLUTION I PUT IN HW 1/2
 def glue_funs : {α β γ: Type} → (β → γ) → (α → β) → (α) → γ
 | _, _, _, g, f, s => g (f s)

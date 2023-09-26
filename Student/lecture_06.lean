@@ -196,8 +196,8 @@ inductive Box (α : Type) : Type
 | put (a : α) --implicitely pulling type (α : Type) from type Box
 inductive Box' {α : Type} : Type
 | put' (a : α) --implicitely pulling type (α : Type) from type Box
-open Box'
-#check put' 5
+open Box
+#check put 5
 #check (@Box.put)
 -- #check (@Box'.put)
 /-!
@@ -342,7 +342,7 @@ inductive Prod (α β : Type) : Type
 | pair (a : α) (b : β)
 
 open Prod 
-
+#reduce ("Hello", 5).snd
 /-!
 ### Constructor
 Our pair constructor is polymorphic with two implicit type arguments,
@@ -435,12 +435,12 @@ and *snd*; and (3) there is a notation for the type,
 def pair0 := Prod.mk true 10
 
 -- It's better to use standard "outfix" notation
-def pair1 := ("Hello",5)
+def pair1 := ("Hello",5, "donut")
 def pair2 := (17, false)
 
 #check pair1      -- Type is String × Nat
 #check pair2      -- Type is Nat × Bool
-
+#reduce pair1.2.2
 -- Be sure you understand these function types
 #check (@Prod.fst)
 #check (@Prod.snd)
