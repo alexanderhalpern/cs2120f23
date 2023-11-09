@@ -293,7 +293,7 @@ def sum_f : (Nat → Nat) → Nat → Nat
 | f, 0 => f 0
 | f, n' + 1 => f (n' + 1) + sum_f f n' 
 
-#eval sum_f (fun n => n) 10   -- expect 55
-#eval sum_f (fun n => n^2) 10 -- is 385 correct? 
+#eval sum_f (fun n => n) 30   -- expect 55
+#eval sum_f (fun n => n^2) 15 -- is 385 correct? 
 
 

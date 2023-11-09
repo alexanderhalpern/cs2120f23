@@ -1,5 +1,7 @@
 /-!
-# Homework #7 Part 2 -- Exam Practice
+# Exam 1
+
+DO NOT CHEAT.
 -/
 
 /-! 
@@ -12,7 +14,8 @@ otherwise.
 -/
 
 -- Define your function here
-
+def pythag : Nat → Nat → Nat → Bool
+| a, b, c => (a^2 + b^2) = c^2
 
 -- The following test cases should then pass
 #eval pythag 3 4 5  -- expect true
@@ -28,6 +31,9 @@ inclusive.
 -/
 
 -- Define your function here
+def sum_cubes  : Nat → Nat
+| 0 => 0
+| (a + 1) => (a + 1)^3 + (sum_cubes a)
 
 
 
@@ -58,13 +64,19 @@ Lean prover to work out a solution for each case.
 -/
 
 def prod_ors_to_or_prods {α β γ δ: Type} :
-  (α ⊕ β) × (γ ⊕ δ) → (α × γ) ⊕ (α × δ) ⊕ (β × γ) ⊕ (β × δ) 
-| (Sum.inl a, Sum.inl b) => (Sum.inl (a, b))
-| (Sum.inl a, Sum.inr b) => (Sum.)
-| _ => _
-| _ => _
+  (α ⊕ β) × (γ ⊕ δ) → α × γ ⊕ α × δ ⊕ β × γ ⊕ β × δ 
+| (Sum.inl a, Sum.inl b) => Sum.inl (a, b)
+| (Sum.inl a, Sum.inr b) => Sum.inr (Sum.inl (a, b))
+| (Sum.inr a, Sum.inl b) => Sum.inr (Sum.inr (Sum.inl (a, b)))
+| (Sum.inr a, Sum.inr b) => Sum.inr (Sum.inr (Sum.inr (a, b)))
 
 -- Write the second function here from scratch
+def or_prods_to_prod_ors {α β γ δ: Type} :
+  α × γ ⊕ α × δ ⊕ β × γ ⊕ β × δ → (α ⊕ β) × (γ ⊕ δ)
+| Sum.inl (a, b) => (Sum.inl a, Sum.inl b)
+| Sum.inr (Sum.inl (a, b)) => (Sum.inl a, Sum.inr b)
+| Sum.inr (Sum.inr (Sum.inl (a, b))) => (Sum.inr a, Sum.inl b)
+| Sum.inr (Sum.inr (Sum.inr (a, b))) => (Sum.inr a, Sum.inr b)
 
 /-!
 ## #4 Propositional Logic Syntax and Semantics
@@ -89,6 +101,17 @@ Note: There's no need here to use our implementation
 of propositional logic. Just write the expression 
 here using the notation we've defined.
 -/
+
+def a := var.mk 0
+def o := var.mk 1
+def c := var.mk 2
+def b := var.mk 3
+
+def A := {a}
+def O := {o}
+def C := {c}
+def B := {b}
+def e := (((O ∨ A) ∧ (B ∨ C)) ⇔ ((A ∧ B) ∨ (A ∧ C) ∨ (O ∧ B) ∨ (O ∧ C)))
 
 /-!
 ## #5 Propositional Logic Validity

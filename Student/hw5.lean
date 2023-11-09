@@ -81,6 +81,13 @@ def not_either_not_both { jam cheese } :
 | (Sum.inl nojam) => fun (jc : jam × cheese ) => nojam (jc.1)
 | (Sum.inr nocheese) => fun (jc : jam × cheese ) => nocheese (jc.2)
 
+-- his solution
+def not_either_not_both' { jam cheese } :
+  ((no jam) ⊕ (no cheese)) → 
+  (no (jam × cheese)) 
+| (Sum.inl nojam) => fun (j, c) => nojam j
+| (Sum.inr nocheese) => fun (j, c) => nocheese c
+
 /-!
 ### #2: Not One or Not the Other Implies Not Both
 Now prove this principle *in general* by defining a 
