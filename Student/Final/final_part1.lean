@@ -117,10 +117,14 @@ formal proof of it, and briefly explain in English how you
 proved it.
 -/
 
-example : ∃ n, square n 4 := Exists.intro 2 (sqr 2 4 rfl) -- fill in _
+
+example : ∃ n, square n 4 := Exists.intro 2 (sqr 2 4 rfl)
 
 /-
 English language translation of propostion here:
+This proof shows that there exists some Natural number, n, that, when squared, equals 4. We proved that,
+in this case, if you square the value 2 you will obtain the value 4. In proving this, I utilized the
+reflexivity tactic to show reflexive equality between 2 ^ 2 and 4 (2^2=4) using sqr.
 -/
 
 /-!
@@ -454,8 +458,8 @@ write separate tactic applications indented on separate lines.
 theorem eq_rel_trans {α : Type} {a b c : α} :
 (a = b → b = c → a = c)               -- fill with proposition: equality is transitive
 | ab, bc => by
-  rw [ab, bc]            -- fill in your proof of it here
-
+  rw [ab]            -- fill in your proof of it here
+  rw [bc]
 /-!
 ## Exam Question #3
 
@@ -469,8 +473,8 @@ is not.
 -/
 
 inductive successor : Nat → Nat → Prop
-| next (a sa : Nat) : sa = Nat.succ a → successor a sa
+| next (a : Nat) (sa : Nat) : (sa = Nat.succ a) → successor a sa
 open successor
 
 example : successor 2 3 := next 2 3 rfl
-example : ¬ (successor 2 4) := λ h => nomatch h
+example : ¬(successor 2 4) := fun h => nomatch h

@@ -1,5 +1,5 @@
--- import Mathlib.Data.Set.Basic
--- import Mathlib.Logic.Relation
+import Mathlib.Data.Set.Basic
+import Mathlib.Logic.Relation
 
 
 /-!
@@ -283,7 +283,7 @@ propositions.
 Here, for example, we *state* a proposition using set theory
 notation, but the proof is of the underlying *or* proposition.
 -/
-
+#check 1 ∈ ev_set
 #check 1 ∈ small_set      -- membership proposition in set theory
 #reduce 1 ∈ small_set     -- this proposition in predicate logic
 example : 1 ∈ small_set := Or.inr (Or.inl rfl)  -- a proof of it
