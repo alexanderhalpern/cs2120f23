@@ -473,8 +473,11 @@ is not.
 -/
 
 inductive successor : Nat → Nat → Prop
-| next (a : Nat) (sa : Nat) : (sa = Nat.succ a) → successor a sa
+| next (a : Nat) : successor a (Nat.succ a)
 open successor
 
-example : successor 2 3 := next 2 3 rfl
+-- (2, 3) is in the relation
+example : successor 2 3 := next 2
+
+-- (2, 4) is not in the relation
 example : ¬(successor 2 4) := fun h => nomatch h

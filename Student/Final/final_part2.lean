@@ -52,5 +52,10 @@ Formally state and prove the proposition that 9 ∈ odd_perfects.
 Hint: A proof within a proof.
 -/
 
+/-
+We can prove that 9 is in the set of odd_perfects by proving that 9 is in the odd set
+and 9 is in the perfect_squares set. We can use the reflexive tactic to verify that 9 % 2 = 1
+and also show that the 9 is a perfect square for an m value of 3: n = m ^2 validated by 9 = 3 ^ 2.
+-/
 -- Here
 example : 9 ∈ odd_perfects := ⟨ rfl, ⟨ 3, rfl ⟩ ⟩
